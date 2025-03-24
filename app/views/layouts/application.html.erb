@@ -17,7 +17,31 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-white text-dark">
+    <!-- Optional: Basic nav bar -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #9caf88;">
+      <div class="container">
+        <a class="navbar-brand text-white" href="/">Sage&Style</a>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Flash Messages -->
+      <% if notice %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+
+      <% if alert %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= alert %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
   </body>
 </html>
