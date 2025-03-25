@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   devise_for :admins
 
-  # Temporary public access for development/testing
   resources :products
   resources :categories
 
@@ -12,6 +11,9 @@ Rails.application.routes.draw do
     resources :categories
     root to: "dashboard#index"
   end
+
+  # This line enables image URLs like /rails/active_storage/blobs/...
+  mount ActiveStorage::Engine => '/rails/active_storage'
 
   root to: "welcome#index"
 end
