@@ -93,4 +93,14 @@ Product.create!([
   }
 ])
 
+PageContent.find_or_create_by(name: 'about') do |page|
+  page.content = 'Welcome to our About page. This content is editable by admin.'
+end
 
+PageContent.find_or_create_by(name: 'contact') do |page|
+  page.content = 'Get in touch with us through this Contact page. Editable by admin only.'
+end
+
+
+
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

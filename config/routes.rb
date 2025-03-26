@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  get "pages/about"
+  get "pages/contact"
+
   devise_for :admins
+  ActiveAdmin.routes(self)  # ✅ Load ActiveAdmin resources (like PageContent)
 
   resources :products
   resources :categories
@@ -9,10 +14,12 @@ Rails.application.routes.draw do
     get 'dashboard', to: 'dashboard#index'
     resources :products
     resources :categories
-    root to: "dashboard#index"
+    # root to: "dashboard#index" ← ❌ REMOVE this line
   end
 
-  # This line enables image URLs like /rails/active_storage/blobs/...
+  get '/about', to: 'pages#about'
+  get '/contact', to: 'pages#contact'
+
   mount ActiveStorage::Engine => '/rails/active_storage'
 
   root to: "welcome#index"
