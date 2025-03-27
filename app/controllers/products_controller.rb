@@ -9,7 +9,10 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
+    @product = Product.find_by(id: params[:id])
+    redirect_to products_path, alert: "Product not found." unless @product
   end
+
 
   # GET /products/new
   def new

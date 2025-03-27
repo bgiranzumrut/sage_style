@@ -1,0 +1,121 @@
+@import "variables";
+
+.page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  color: $dark-sage;
+}
+
+.homepage-intro {
+  max-width: 700px;
+  margin: 1.5rem auto 3rem auto;
+  font-size: 1.1rem;
+  text-align: center;
+  color: $text-dark;
+
+  h1 {
+    font-size: 2.5rem;
+    color: $sage-green;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: $text-dark;
+    margin-top: 0.5rem;
+  }
+}
+
+.featured-products h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: $text-dark;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  padding: 0 2rem; // Add left/right padding
+  box-sizing: border-box; // Ensures padding is counted inside container width
+}
+
+
+.product-card {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  background-color: $white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.product-card h5 {
+  color: $dark-sage;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: 240px;
+  object-fit: cover;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+}
+
+.product-card .product-price {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text-dark;
+  margin-bottom: 0.5rem;
+}
+
+.product-details-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $dark-sage;
+  border: 1px solid $dark-sage;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: $dark-sage;
+    color: white;
+  }
+}
+
+
+.see-all-products-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.btn-see-all {
+  font-size: 1.1rem;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  background-color: transparent;
+  border: 2px solid $dark-sage;
+  color: $dark-sage;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $dark-sage;
+    color: white;
+  }
+}

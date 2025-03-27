@@ -1,19 +1,28 @@
-<h2 class="text-center mb-4">Featured Products</h2>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'welcome', media: 'all' %>
+<% end %>
 
-<div class="row">
-  <% @featured_products.each do |product| %>
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <% if product.image.attached? %>
-          <%= image_tag url_for(product.image), class: "card-img-top", style: "height: 300px; object-fit: cover;" %>
-        <% end %>
 
-        <div class="card-body">
-          <h5 class="card-title"><%= product.name %></h5>
-          <p class="card-text"><strong>$<%= product.price %></strong></p>
-        </div><%= link_to "See Details", product_path(product), class: "btn btn-sm btn-outline-secondary mt-2" %>
-      </div>
-    </div>
-  <% end %>
+<h1 class="page-title">Welcome to Sage&Style</h1>
+
+<div class="homepage-intro">
+  <p>
+    Discover timeless, ethically-crafted pieces designed with nature and elegance in mind.
+    Whether you're updating your wardrobe or browsing for inspiration, our seasonal and essential
+    collections are curated to help you shop with intention and style.
+  </p>
 </div>
 
+<section class="featured-products">
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+    <%= render partial: "products/product_card", collection: @featured_products, as: :product %>
+  </div>
+
+<div class="see-all-products-wrapper">
+  <%= link_to "See All Products", products_path, class: "btn-see-all" %>
+</div>
+
+
+
+</section>

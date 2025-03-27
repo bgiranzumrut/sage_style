@@ -1,0 +1,34 @@
+@import "variables";
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem; // Responsive space on smaller screens
+}
+
+body {
+  padding-left: 5rem;
+  padding-right: 2rem;
+  background-color: $white;
+  color: $text-dark;
+  font-family: 'Open Sans', sans-serif;
+}
+
+// Button styling (global)
+.button, .btn-see-all, .product-details-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: transparent;
+  border-radius: 8px;
+  border: 2px solid $dark-sage;
+  color: $dark-sage;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 10px 20px;
+  display: inline-block;
+}
+
+.button:hover, .btn-see-all:hover, .product-details-btn:hover {
+  background-color: $dark-sage;
+  color: $white;
+}
