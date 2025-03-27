@@ -5,6 +5,14 @@ class ProductsController < ApplicationController
   # GET /products or /products.json
   def index
     @products = Product.all
+    case params[:filter]
+    when 'on_sale'
+      @products = @products.where(on_sale: true)
+    when 'new'
+      @products = @products.where('created_at >= ?', 3.days.ago)
+    when 'recently_updated'
+      @products = @products.where('updated_at >= ?', 3.days.ago)
+    end
   end
 
   # GET /products/1 or /products/1.json

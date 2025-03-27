@@ -13,6 +13,14 @@
   </p>
 </div>
 
+<div class="category-buttons text-center mb-4">
+  <h2>Shop by Category</h2>
+  <% Category.all.each do |category| %>
+    <%= link_to category.name, category_path(category), class: "btn btn-outline-secondary m-2" %>
+  <% end %>
+</div>
+
+
 <section class="featured-products">
   <h2>Featured Products</h2>
   <div class="product-grid">

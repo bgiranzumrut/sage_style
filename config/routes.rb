@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     get 'dashboard', to: 'dashboard#index'
     resources :products
     resources :categories
-    # root to: "dashboard#index" ← ❌ REMOVE this line
+    resources :categories, only: [:show]
   end
 
   get '/about', to: 'pages#about'
