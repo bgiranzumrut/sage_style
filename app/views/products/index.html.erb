@@ -1,7 +1,5 @@
 <% content_for :title, "Products" %>
 
-<p style="color: green"><%= notice %></p>
-
 <h1 class="page-title">All Products</h1>
 
 <!-- Filter Buttons -->
@@ -30,67 +28,3 @@
 
 
 
-<style>
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-  justify-content: center;
-  margin: 2rem 0;
-}
-
-.product-card {
-  max-width: 280px;
-  background-color: $white;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.product-card img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 0.75rem;
-  border-radius: 8px;
-}
-
-.product-price {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.product-details-btn {
-  font-size: 1rem;
-  font-weight: 600;
-  color: $dark-sage;
-  border: 1px solid $dark-sage;
-  padding: 6px 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  display: inline-block;
-}
-
-.product-details-btn:hover {
-  background-color: $dark-sage;
-  color: white;
-}
-
-.btn-see-all {
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: transparent;
-  border: 2px solid $dark-sage;
-  color: $dark-sage;
-  transition: all 0.2s ease;
-}
-
-.btn-see-all:hover {
-  background-color: $dark-sage;
-  color: white;
-}
-</style>
