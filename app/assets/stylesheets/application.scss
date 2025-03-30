@@ -1,5 +1,8 @@
+@import "bootstrap";
 @import "variables";
+@import "active_admin";
 @import "welcome";
+
 
 .container {
   max-width: 1200px;
@@ -55,7 +58,7 @@ body {
 
 .product-card img {
   max-width: 100%;
-  height: auto;
+  height: 80%;
   margin-bottom: 0.75rem;
   border-radius: 8px;
 }
@@ -97,3 +100,10 @@ body {
   background-color: $dark-sage;
   color: white;
 }
+
+
+
+
+
+
+

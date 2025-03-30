@@ -62,8 +62,14 @@ end
 gem 'devise'
 gem "image_processing", "~> 1.2"
 gem 'activeadmin'
-gem 'sprockets-rails'
 gem 'sassc'
+gem 'kaminari'
+gem 'bootstrap', '~> 5.3.0'
+gem "sassc-rails"
+
+
+
+
 
 
 

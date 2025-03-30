@@ -1,0 +1,62 @@
+<div class="pagination-wrapper text-center mt-4">
+  <nav aria-label="Pagination">
+    <ul class="pagination justify-content-center custom-pagination">
+
+      <%# First Page Link %>
+      <% unless @products.first_page? %>
+        <li class="page-item d-none d-sm-inline">
+          <%= link_to t('views.pagination.first'), url_for(page: 1), class: 'page-link custom-page-link' %>
+        </li>
+        <li class="page-item d-inline d-sm-none">
+          <%= link_to '«', url_for(page: 1), class: 'page-link custom-page-link' %>
+        </li>
+      <% end %>
+
+      <%# Previous Page Link %>
+      <% if @products.prev_page %>
+        <li class="page-item d-none d-sm-inline">
+          <%= link_to t('views.pagination.previous'), url_for(page: @products.prev_page), class: 'page-link custom-page-link' %>
+        </li>
+        <li class="page-item d-inline d-sm-none">
+          <%= link_to '‹', url_for(page: @products.prev_page), class: 'page-link custom-page-link' %>
+        </li>
+      <% end %>
+
+      <%# Numbered Pages %>
+      <% paginator.each_page do |page| %>
+        <% if page.left_outer? || page.right_outer? || page.inside_window? %>
+          <li class="page-item <%= 'active' if page.current? %>">
+            <%= link_to page, url_for(page: page), class: "page-link custom-page-link" %>
+          </li>
+        <% elsif !page.was_truncated? %>
+          <li class="page-item disabled">
+            <span class="page-link custom-page-link">&hellip;</span>
+          </li>
+        <% end %>
+      <% end %>
+
+      <%# Next Page Link %>
+      <% if @products.next_page %>
+        <li class="page-item d-none d-sm-inline">
+          <%= link_to t('views.pagination.next'), url_for(page: @products.next_page), class: 'page-link custom-page-link' %>
+        </li>
+        <li class="page-item d-inline d-sm-none">
+          <%= link_to '›', url_for(page: @products.next_page), class: 'page-link custom-page-link' %>
+        </li>
+      <% end %>
+
+      <% unless @products.last_page? %>
+        <li class="page-item d-none d-sm-inline">
+          <%= link_to t('views.pagination.last'), url_for(page: @products.total_pages), class: 'page-link custom-page-link' %>
+        </li>
+        <li class="page-item d-inline d-sm-none">
+          <%= link_to '»', url_for(page: @products.total_pages), class: 'page-link custom-page-link' %>
+        </li>
+      <% end %>
+
+    </ul>
+  </nav>
+</div>
+
+<style>
+</style>

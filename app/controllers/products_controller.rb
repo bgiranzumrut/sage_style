@@ -13,6 +13,7 @@ class ProductsController < ApplicationController
     when 'recently_updated'
       @products = @products.where('updated_at >= ?', 3.days.ago)
     end
+    @products = @products.page(params[:page]).per(8)
   end
 
   # GET /products/1 or /products/1.json
