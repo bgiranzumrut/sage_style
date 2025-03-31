@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
   <%= form_with url: products_path, method: :get, local: true, class: "d-flex flex-wrap justify-content-center gap-3" do %>
 
-  <!-- ✅ Keeps current filter when typing or selecting category -->
+
   <%= hidden_field_tag :filter, params[:filter] %>
 
   <div>
