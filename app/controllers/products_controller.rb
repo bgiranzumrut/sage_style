@@ -6,19 +6,33 @@ class ProductsController < ApplicationController
   def index
     @products = Product.all
 
+    # Filter by predefined filter
     case params[:filter]
     when 'on_sale'
       @products = @products.where(on_sale: true)
     when 'new'
       @products = @products.where('created_at >= ?', 3.days.ago)
     when 'recently_updated'
-      @products = @products
-        .where('updated_at >= ?', 3.days.ago)
-        .where.not('created_at = updated_at')
+      @products = @products.where('updated_at >= ?', 3.days.ago)
+                           .where.not('created_at = updated_at')
     end
 
+    # Filter by category
+    if params[:category_id].present?
+      @products = @products.where(category_id: params[:category_id])
+    end
+
+    # Filter by search keyword (name or description, case-insensitive)
+    if params[:search].present?
+      keyword = "%#{params[:search].downcase}%"
+      @products = @products.where("LOWER(name) LIKE :keyword OR LOWER(description) LIKE :keyword", keyword: keyword)
+    end
+
+    # Pagination
     @products = @products.page(params[:page]).per(8)
   end
+
+
 
 
   # GET /products/1 or /products/1.json

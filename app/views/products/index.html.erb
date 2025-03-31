@@ -1,14 +1,45 @@
 <% content_for :title, "Products" %>
 
-<h1 class="page-title">All Products</h1>
+<h1 class="page-title text-center my-4">All Products</h1>
+
+<!-- Search Form -->
+<div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
+  <%= form_with url: products_path, method: :get, local: true, class: "d-flex flex-wrap justify-content-center gap-3" do %>
+
+  <!-- ✅ Keeps current filter when typing or selecting category -->
+  <%= hidden_field_tag :filter, params[:filter] %>
+
+  <div>
+    <%= text_field_tag :search, params[:search], class: "form-control me-2", placeholder: "Search by keyword...", style: "min-width: 250px;" %>
+  </div>
+
+  <div>
+    <%= select_tag :category_id,
+        options_from_collection_for_select(Category.all, :id, :name, params[:category_id]),
+        include_blank: "All Categories",
+        class: "form-select" %>
+  </div>
+<% end %>
+
+</div>
 
 <!-- Filter Buttons -->
 <div class="filters text-center mb-4">
-  <%= link_to "All Products", products_path, class: "btn-see-all mx-2" %>
-  <%= link_to "On Sale", products_path(filter: "on_sale"), class: "btn-see-all mx-2" %>
-  <%= link_to "New", products_path(filter: "new"), class: "btn-see-all mx-2" %>
-  <%= link_to "Recently Updated", products_path(filter: "recently_updated"), class: "btn-see-all mx-2" %>
+  <%= link_to "On Sale", products_path(params.permit(:search, :category_id).merge(filter: "on_sale")),
+    class: "btn-see-all mx-2 #{'active' if params[:filter] == 'on_sale'}" %>
+
+  <%= link_to "New", products_path(params.permit(:search, :category_id).merge(filter: "new")),
+    class: "btn-see-all mx-2 #{'active' if params[:filter] == 'new'}" %>
+
+  <%= link_to "Recently Updated", products_path(params.permit(:search, :category_id).merge(filter: "recently_updated")),
+    class: "btn-see-all mx-2 #{'active' if params[:filter] == 'recently_updated'}" %>
+
+  <%= link_to "All Products", products_path,
+  class: "btn-see-all mx-2 #{'active' unless params[:filter]}" %>
+
 </div>
+
+
 
 <% if @products.any? %>
   <!-- Product Grid -->
@@ -35,6 +66,36 @@
   <!-- No Products Found Message -->
   <div class="text-center mt-5">
     <h4>No products found.</h4>
-    <%= link_to 'Back to All Products', products_path, class: 'btn btn-outline-dark mt-3' %>
+    <%= link_to 'Back to All Products', products_path, class: 'btn-see-all mt-3' %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form");
+    const searchInput = form?.querySelector("input[name='search']");
+    const categorySelect = form?.querySelector("select[name='category_id']");
+
+    // Auto-submit on input
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        form.requestSubmit();
+      });
+
+      // Refocus input if it has a value (after reload)
+      if (searchInput.value.trim() !== "") {
+        searchInput.focus();
+        searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length); // cursor at end
+      }
+    }
+
+    // Auto-submit on category change
+    if (categorySelect) {
+      categorySelect.addEventListener("change", () => {
+        form.requestSubmit();
+      });
+    }
+  });
+</script>
+
+
