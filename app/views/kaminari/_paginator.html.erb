@@ -26,8 +26,9 @@
     <li class="page-item <%= 'active' if page.current? %>">
       <%= link_to page, url_for(page: page),
         class: page.current? ?
-          "btn btn-success rounded-pill px-4 py-2 fs-5" :
-          "page-link rounded-pill px-4 py-2 fs-5 bg-light text-secondary" %>
+  "page-link rounded-pill px-4 py-2 fs-5 bg-light border-success text-dark" :
+  "page-link rounded-pill px-4 py-2 fs-5 bg-light text-dark border border-secondary"
+ %>
     </li>
   <% elsif page.was_truncated? %>
     <li class="page-item disabled">
