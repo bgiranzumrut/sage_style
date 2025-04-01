@@ -1,0 +1,50 @@
+
+<h1>Checkout</h1>
+
+<%= form_with model: @order, url: orders_path, method: :post do |f| %>
+  <div class="mb-3">
+    <%= f.label :name %><br>
+    <%= f.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :address %><br>
+    <%= f.text_area :address, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :province_id, "Province" %><br>
+    <%= f.collection_select :province_id, @provinces, :id, :name, prompt: "Select a province", class: "form-select", required: true %>
+  </div>
+
+  <h3>Order Summary</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% total = 0 %>
+      <% @cart_items.each do |product| %>
+        <% quantity = @cart[product.id.to_s] %>
+        <% subtotal = product.price * quantity %>
+        <% total += subtotal %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= quantity %></td>
+          <td>$<%= '%.2f' % product.price %></td>
+          <td>$<%= '%.2f' % subtotal %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><strong>Subtotal:</strong> $<%= '%.2f' % total %></p>
+  <p><em>Taxes will be calculated after province selection.</em></p>
+
+  <%= f.submit "Place Order", class: "btn btn-success" %>
+<% end %>

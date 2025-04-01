@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_27_164946) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_31_224959) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -70,6 +70,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_164946) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.text "address"
+    t.integer "province_id", null: false
+    t.decimal "gst"
+    t.decimal "pst"
+    t.decimal "hst"
+    t.decimal "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["province_id"], name: "index_orders_on_province_id"
+  end
+
   create_table "page_contents", force: :cascade do |t|
     t.string "name"
     t.text "content"
@@ -87,10 +101,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_27_164946) do
     t.datetime "updated_at", null: false
     t.boolean "featured"
     t.boolean "on_sale"
+    t.string "image_url"
     t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "provinces", force: :cascade do |t|
+    t.string "name"
+    t.decimal "gst_rate"
+    t.decimal "pst_rate"
+    t.decimal "hst_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "orders", "provinces"
   add_foreign_key "products", "categories"
 end
