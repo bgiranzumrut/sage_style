@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   resources :products
   resources :categories
+  resources :orders, only: [:new, :create, :show]
+
 
   namespace :admin do
     get "dashboard/index"
