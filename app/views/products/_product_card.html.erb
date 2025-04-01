@@ -8,4 +8,6 @@
   <p class="product-price mt-2"><%= number_to_currency(product.price) %></p>
 
   <%= link_to "See Details", product_path(product), class: "btn btn-outline-dark btn-sm mt-2 product-details-btn" %>
+  <%= button_to 'Add to Cart', add_to_cart_path(product.id), method: :post, class: 'btn btn-success' %>
+
 </div>

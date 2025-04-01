@@ -12,6 +12,8 @@
   <p class="price h4 mb-4">$<%= number_with_precision(@product.price, precision: 2) %></p>
 
   <%= link_to "Back to Products", products_path, class: "btn btn-outline-dark" %>
+  <%= button_to 'Add to Cart', add_to_cart_path(@product.id), method: :post, class: 'btn btn-primary' %>
+
 </div>
 
 
