@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "pages/contact"
 
   devise_for :admins
-  ActiveAdmin.routes(self)  # ✅ Load ActiveAdmin resources (like PageContent)
+  ActiveAdmin.routes(self)  # Load ActiveAdmin resources (like PageContent)
 
   resources :products
   resources :categories
@@ -19,6 +19,12 @@ Rails.application.routes.draw do
 
   get '/about', to: 'pages#about'
   get '/contact', to: 'pages#contact'
+
+  # ✅ Cart routes
+  post   '/cart/add/:id',     to: 'cart#add',    as: 'add_to_cart'
+  delete '/cart/remove/:id',  to: 'cart#remove', as: 'remove_from_cart'
+  post   '/cart/update',      to: 'cart#update', as: 'update_cart'
+  get    '/cart',             to: 'cart#show',   as: 'cart'
 
   mount ActiveStorage::Engine => '/rails/active_storage'
 
