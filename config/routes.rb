@@ -22,11 +22,12 @@ Rails.application.routes.draw do
   get '/about', to: 'pages#about'
   get '/contact', to: 'pages#contact'
 
-  # ✅ Cart routes
-  post   '/cart/add/:id',     to: 'cart#add',    as: 'add_to_cart'
-  delete '/cart/remove/:id',  to: 'cart#remove', as: 'remove_from_cart'
-  post   '/cart/update',      to: 'cart#update', as: 'update_cart'
-  get    '/cart',             to: 'cart#show',   as: 'cart'
+
+get    '/cart',              to: 'cart#show',   as: 'cart'
+post   '/cart/add/:id',      to: 'cart#add',    as: 'add_to_cart'
+get    '/cart/remove/:id',   to: 'cart#remove', as: 'remove_from_cart'  # ✅ change DELETE → GET
+post   '/cart/update',       to: 'cart#update', as: 'update_cart'
+
 
   mount ActiveStorage::Engine => '/rails/active_storage'
 
