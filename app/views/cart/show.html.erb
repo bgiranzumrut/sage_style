@@ -4,7 +4,7 @@
   <p>Your cart is empty.</p>
   <%= link_to 'Browse Products', products_path, class: 'btn btn-primary' %>
 <% else %>
-  <!-- ✅ Update Cart -->
+  <!--  Update Cart -->
   <form action="/cart/update" method="post">
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 

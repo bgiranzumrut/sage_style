@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
   get "pages/about"
   get "pages/contact"
@@ -25,7 +26,7 @@ Rails.application.routes.draw do
 
 get    '/cart',              to: 'cart#show',   as: 'cart'
 post   '/cart/add/:id',      to: 'cart#add',    as: 'add_to_cart'
-get    '/cart/remove/:id',   to: 'cart#remove', as: 'remove_from_cart'  # ✅ change DELETE → GET
+get    '/cart/remove/:id',   to: 'cart#remove', as: 'remove_from_cart'
 post   '/cart/update',       to: 'cart#update', as: 'update_cart'
 
 
