@@ -1,6 +1,5 @@
 class OrdersController < ApplicationController
-end
-class OrdersController < ApplicationController
+  before_action :authenticate_user!  #  Ensure logged-in user
   before_action :initialize_cart
 
   def new
@@ -10,29 +9,29 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params)
+    @order = current_user.orders.build(order_params)  # associate with current user
     @order.status = "new"
 
     subtotal = calculate_subtotal
     tax_rates = get_tax_rates(@order.province_id)
-    gst = subtotal * tax_rates[:gst_rate]
-    pst = subtotal * tax_rates[:pst_rate]
-    hst = subtotal * tax_rates[:hst_rate]
-    total = subtotal + gst + pst + hst
 
-    @order.total = total
+    @order.subtotal = subtotal
+    @order.gst = subtotal * tax_rates[:gst_rate]
+    @order.pst = subtotal * tax_rates[:pst_rate]
+    @order.hst = subtotal * tax_rates[:hst_rate]
+    @order.total = subtotal + @order.gst + @order.pst + @order.hst
 
     if @order.save
       @cart.each do |product_id, quantity|
         product = Product.find(product_id)
-        @order.line_items.create!(
+        @order.order_items.create!(
           product: product,
           quantity: quantity,
-          price_at_purchase: product.price
+          unit_price: product.price
         )
       end
 
-      session[:cart] = {} # Clear cart after order
+      session[:cart] = {}  # 🧹 Clear the cart
       redirect_to order_path(@order), notice: "Order placed successfully!"
     else
       @provinces = Province.all
@@ -42,7 +41,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.find(params[:id])
+    @order = current_user.orders.find(params[:id])  #  Only allow user to see their own order
   end
 
   private
@@ -58,11 +57,4 @@ class OrdersController < ApplicationController
     end
   end
 
-  def get_tax_rates(province_id)
-    Province.find(province_id).slice(:gst_rate, :pst_rate, :hst_rate)
-  end
-
-  def order_params
-    params.require(:order).permit(:name, :address, :province_id)
-  end
-end
+  def get
