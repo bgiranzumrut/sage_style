@@ -15,24 +15,24 @@
 
 <div class="mb-3">
   <%= f.label :address %>
-  <%= f.text_area :address, class: "form-control", required: true %>
+  <%= f.text_area :address, class: "form-control" %>
 </div>
 
 <div class="mb-3">
   <%= f.label :city %>
-  <%= f.text_field :city, class: "form-control", required: true %>
+  <%= f.text_field :city, class: "form-control"%>
 </div>
 
 <div class="mb-3">
   <%= f.label :postal_code %>
-  <%= f.text_field :postal_code, class: "form-control", required: true %>
+  <%= f.text_field :postal_code, class: "form-control" %>
 </div>
 
 <div class="mb-3">
   <%= f.label :province_id, "Province" %>
   <%= f.collection_select :province_id, Province.all, :id, :name,
         { prompt: "Select a province" },
-        { class: "form-select", required: true } %>
+        { class: "form-select" } %>
 </div>
 
 

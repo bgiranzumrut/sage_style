@@ -48,6 +48,10 @@ class OrdersController < ApplicationController
     @order = current_user.orders.find(params[:id])
   end
 
+  def index
+    @orders = current_user.orders.includes(order_items: :product, province: {})
+  end
+
   private
 
   def initialize_cart

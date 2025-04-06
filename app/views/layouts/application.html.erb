@@ -34,6 +34,8 @@
       <%= link_to "Contact", contact_path, class: "nav-link text-white" %>
       <% if user_signed_in? %>
   <span class="me-2">Hello, <%= current_user.email %>!</span>
+  <%= link_to "My Orders", orders_path, class: "nav-link text-white" if user_signed_in? %>
+
   <%= button_to 'Logout', destroy_user_session_path, method: :delete, form_class: "d-inline", class: "nav-link text-white" %>
 
 

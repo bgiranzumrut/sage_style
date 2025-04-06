@@ -1,0 +1,36 @@
+<h1>My Past Orders</h1>
+
+<% @orders.each do |order| %>
+  <div class="card mb-4 p-3">
+    <h5>Order ##<%= order.id %> - <%= order.created_at.strftime("%B %d, %Y") %></h5>
+    <p>Status: <strong><%= order.status.capitalize %></strong></p>
+    <p>Shipping Address: <%= order.address %> (<%= order.province.name %>)</p>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.order_items.each do |item| %>
+          <tr>
+            <td><%= item.product.name %></td>
+            <td><%= item.quantity %></td>
+            <td><%= number_to_currency(item.unit_price) %></td>
+            <td><%= number_to_currency(item.unit_price * item.quantity) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <p><strong>Subtotal:</strong> <%= number_to_currency(order.subtotal) %></p>
+    <p><strong>GST:</strong> <%= number_to_currency(order.gst) %></p>
+    <p><strong>PST:</strong> <%= number_to_currency(order.pst) %></p>
+    <p><strong>HST:</strong> <%= number_to_currency(order.hst) %></p>
+    <p><strong>Total:</strong> <%= number_to_currency(order.total) %></p>
+  </div>
+<% end %>
