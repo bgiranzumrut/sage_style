@@ -62,4 +62,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def get
+  def get_tax_rates(province_id)
+    Province.find(province_id).slice(:gst_rate, :pst_rate, :hst_rate)
+  end
+end
