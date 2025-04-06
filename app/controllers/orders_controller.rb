@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!  #  Ensure logged-in user
+  before_action :authenticate_user!
   before_action :initialize_cart
 
   def new
@@ -12,9 +12,8 @@ class OrdersController < ApplicationController
     @provinces = Province.all
   end
 
-
   def create
-    @order = current_user.orders.build(order_params)  # associate with current user
+    @order = current_user.orders.build(order_params)
     @order.status = "new"
 
     subtotal = calculate_subtotal
@@ -36,7 +35,7 @@ class OrdersController < ApplicationController
         )
       end
 
-      session[:cart] = {}  # 🧹 Clear the cart
+      session[:cart] = {}
       redirect_to order_path(@order), notice: "Order placed successfully!"
     else
       @provinces = Province.all
@@ -46,7 +45,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = current_user.orders.find(params[:id])  #  Only allow user to see their own order
+    @order = current_user.orders.find(params[:id])
   end
 
   private
@@ -64,5 +63,9 @@ class OrdersController < ApplicationController
 
   def get_tax_rates(province_id)
     Province.find(province_id).slice(:gst_rate, :pst_rate, :hst_rate)
+  end
+
+  def order_params
+    params.require(:order).permit(:name, :address, :province_id)
   end
 end
