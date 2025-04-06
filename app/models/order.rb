@@ -2,6 +2,9 @@ class Order < ApplicationRecord
   belongs_to :user, optional: true  # Guest checkout or registered user
   has_many :order_items, dependent: :destroy
   belongs_to :province
+  validates :subtotal, :gst, :pst, :hst, :total, presence: true, numericality: true
+  validates :address, presence: true
+
 
   def self.ransackable_attributes(auth_object = nil)
     %w[
