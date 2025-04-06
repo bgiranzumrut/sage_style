@@ -1,20 +1,21 @@
-
 <h1>Checkout</h1>
 
-<%= form_with model: @order, url: orders_path, method: :post do |f| %>
+<%= form_with model: @order, url: orders_path, method: :post, local: true do |f| %>
   <div class="mb-3">
-    <%= f.label :name %><br>
+    <%= f.label :name %>
     <%= f.text_field :name, class: "form-control", required: true %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :address %><br>
+    <%= f.label :address %>
     <%= f.text_area :address, class: "form-control", required: true %>
   </div>
 
   <div class="mb-3">
-    <%= f.label :province_id, "Province" %><br>
-    <%= f.collection_select :province_id, @provinces, :id, :name, prompt: "Select a province", class: "form-select", required: true %>
+    <%= f.label :province_id, "Province" %>
+    <%= f.collection_select :province_id, @provinces, :id, :name,
+          { prompt: "Select a province" },
+          { class: "form-select", required: true } %>
   </div>
 
   <h3>Order Summary</h3>
@@ -36,15 +37,15 @@
         <tr>
           <td><%= product.name %></td>
           <td><%= quantity %></td>
-          <td>$<%= '%.2f' % product.price %></td>
-          <td>$<%= '%.2f' % subtotal %></td>
+          <td>$<%= number_with_precision(product.price, precision: 2) %></td>
+          <td>$<%= number_with_precision(subtotal, precision: 2) %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <p><strong>Subtotal:</strong> $<%= '%.2f' % total %></p>
-  <p><em>Taxes will be calculated after province selection.</em></p>
+  <p><strong>Subtotal:</strong> $<%= number_with_precision(total, precision: 2) %></p>
+  <p class="text-muted"><em>Taxes (GST, PST, HST) will be calculated and shown on confirmation.</em></p>
 
   <%= f.submit "Place Order", class: "btn btn-success" %>
 <% end %>

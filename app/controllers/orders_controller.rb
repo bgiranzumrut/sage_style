@@ -3,10 +3,15 @@ class OrdersController < ApplicationController
   before_action :initialize_cart
 
   def new
-    @order = Order.new
-    @provinces = Province.all
+    @order = Order.new(
+      name: current_user.first_name + " " + current_user.last_name,
+      address: current_user.address,
+      province_id: current_user.province_id
+    )
     @cart_items = Product.find(@cart.keys)
+    @provinces = Province.all
   end
+
 
   def create
     @order = current_user.orders.build(order_params)  # associate with current user
