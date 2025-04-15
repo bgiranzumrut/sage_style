@@ -1,6 +1,8 @@
 ActiveAdmin.register Order do
   includes :user, :province, order_items: :product
 
+  permit_params :status, :name, :address, :province_id, :user_id, :subtotal, :gst, :pst, :hst, :total
+
   index do
     selectable_column
     id_column
@@ -16,6 +18,9 @@ ActiveAdmin.register Order do
     column :total
     actions
   end
+
+  filter :status
+  filter :created_at
 
   show do
     panel "Customer Info" do
@@ -43,11 +48,22 @@ ActiveAdmin.register Order do
 
     panel "Products Ordered" do
       table_for order.order_items do
-        column("Product")   { |item| item.product.name }
-        column("Qty")       { |item| item.quantity }
-        column("Unit Price"){ |item| number_to_currency(item.unit_price) }
-        column("Subtotal")  { |item| number_to_currency(item.unit_price * item.quantity) }
+        column("Product")    { |item| item.product.name }
+        column("Qty")        { |item| item.quantity }
+        column("Unit Price") { |item| number_to_currency(item.unit_price) }
+        column("Subtotal")   { |item| number_to_currency(item.unit_price * item.quantity) }
       end
     end
+  end
+
+  form do |f|
+    f.inputs "Order Details" do
+      f.input :status, as: :select, collection: Order::STATUSES
+      f.input :name
+      f.input :address
+      f.input :province
+      f.input :user
+    end
+    f.actions
   end
 end
