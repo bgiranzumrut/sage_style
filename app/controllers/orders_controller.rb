@@ -25,24 +25,42 @@ class OrdersController < ApplicationController
     @order.hst = subtotal * tax_rates[:hst_rate]
     @order.total = subtotal + @order.gst + @order.pst + @order.hst
 
-    if @order.save
-      @cart.each do |product_id, quantity|
-        product = Product.find(product_id)
-        @order.order_items.create!(
-          product: product,
-          quantity: quantity,
-          unit_price: product.price
-        )
+    # ✅ 1. Charge Stripe first
+    begin
+      charge = Stripe::Charge.create({
+        amount: (@order.total * 100).to_i, # in cents
+        currency: 'usd',
+        source: params[:stripeToken],
+        description: "Sage&Style Order for #{current_user.email}"
+      })
+
+      #  2. Only save the order if Stripe payment succeeds
+      @order.stripe_charge_id = charge.id
+
+      if @order.save
+        @cart.each do |product_id, quantity|
+          product = Product.find(product_id)
+          @order.order_items.create!(
+            product: product,
+            quantity: quantity,
+            unit_price: product.price
+          )
+        end
+
+        session[:cart] = {}
+        redirect_to order_path(@order), notice: "Order placed and payment successful!"
+      else
+        raise "Order save failed"
       end
 
-      session[:cart] = {}
-      redirect_to order_path(@order), notice: "Order placed successfully!"
-    else
+    rescue Stripe::CardError => e
+      flash[:alert] = e.message
       @provinces = Province.all
       @cart_items = Product.find(@cart.keys)
       render :new
     end
   end
+
 
   def show
     @order = current_user.orders.find(params[:id])

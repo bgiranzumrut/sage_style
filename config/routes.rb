@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
   resources :products
   resources :categories
-  resources :orders, only: [:new, :create, :show]
   resources :orders, only: [:new, :create, :show, :index]
+
 
 
 
@@ -30,6 +30,9 @@ get    '/cart',              to: 'cart#show',   as: 'cart'
 post   '/cart/add/:id',      to: 'cart#add',    as: 'add_to_cart'
 get    '/cart/remove/:id',   to: 'cart#remove', as: 'remove_from_cart'
 post   '/cart/update',       to: 'cart#update', as: 'update_cart'
+get  'payments/new',    to: 'payments#new'
+post 'payments/charge', to: 'payments#charge'
+
 
 
   mount ActiveStorage::Engine => '/rails/active_storage'

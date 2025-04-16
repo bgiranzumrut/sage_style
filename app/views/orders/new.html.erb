@@ -1,6 +1,6 @@
 <h1>Checkout</h1>
 
-<%= form_with model: @order, url: orders_path, method: :post, local: true do |f| %>
+<%= form_with model: @order, url: orders_path, method: :post, local: true, id: "payment-form" do |f| %>
   <div class="mb-3">
     <%= f.label :name %>
     <%= f.text_field :name, class: "form-control", required: true %>
@@ -47,5 +47,36 @@
   <p><strong>Subtotal:</strong> $<%= number_with_precision(total, precision: 2) %></p>
   <p class="text-muted"><em>Taxes (GST, PST, HST) will be calculated and shown on confirmation.</em></p>
 
-  <%= f.submit "Place Order", class: "btn btn-success" %>
+  <h3>Payment Info</h3>
+  <div id="card-element" class="mb-3"></div>
+
+  <%= hidden_field_tag :stripeToken, nil %>
+
+  <%= f.submit "Pay Now", class: "btn btn-primary" %>
 <% end %>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe("<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>");
+  const elements = stripe.elements();
+  const card = elements.create('card');
+  card.mount('#card-element');
+
+  const form = document.getElementById('payment-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const {token, error} = await stripe.createToken(card);
+    if (error) {
+      alert(error.message);
+    } else {
+      const input = document.querySelector('input[name="stripeToken"]');
+      input.value = token.id;
+      form.submit();
+    }
+  });
+</script>
+
+
+
+

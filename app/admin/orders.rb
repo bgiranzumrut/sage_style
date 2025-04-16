@@ -1,7 +1,8 @@
 ActiveAdmin.register Order do
   includes :user, :province, order_items: :product
 
-  permit_params :status, :name, :address, :province_id, :user_id, :subtotal, :gst, :pst, :hst, :total
+  permit_params :status, :name, :address, :province_id, :user_id,
+                :subtotal, :gst, :pst, :hst, :total, :stripe_charge_id
 
   index do
     selectable_column
@@ -16,11 +17,14 @@ ActiveAdmin.register Order do
     column :pst
     column :hst
     column :total
+    column("Stripe Charge") { |order| order.stripe_charge_id }
     actions
   end
 
   filter :status
   filter :created_at
+  filter :province
+  filter :user
 
   show do
     panel "Customer Info" do
@@ -43,6 +47,7 @@ ActiveAdmin.register Order do
         row :pst
         row :hst
         row :total
+        row :stripe_charge_id
       end
     end
 
@@ -63,6 +68,7 @@ ActiveAdmin.register Order do
       f.input :address
       f.input :province
       f.input :user
+      f.input :stripe_charge_id, input_html: { disabled: true }
     end
     f.actions
   end
