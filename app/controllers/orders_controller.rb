@@ -1,19 +1,31 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
   before_action :initialize_cart
 
   def new
-    @order = Order.new(
-      name: current_user.first_name + " " + current_user.last_name,
-      address: current_user.address,
-      province_id: current_user.province_id
-    )
+    @order = Order.new
+
+    if user_signed_in?
+      @order.name = "#{current_user.first_name} #{current_user.last_name}"
+      @order.address = current_user.address
+      @order.province_id = current_user.province_id
+    end
+
     @cart_items = Product.find(@cart.keys)
     @provinces = Province.all
+
+    subtotal = calculate_subtotal
+    selected_province = Province.find_by(id: @order.province_id) || Province.first
+    tax_rates = selected_province.slice(:gst_rate, :pst_rate, :hst_rate)
+
+    @order.subtotal = subtotal
+    @order.gst = subtotal * tax_rates[:gst_rate]
+    @order.pst = subtotal * tax_rates[:pst_rate]
+    @order.hst = subtotal * tax_rates[:hst_rate]
+    @order.total = subtotal + @order.gst + @order.pst + @order.hst
   end
 
   def create
-    @order = current_user.orders.build(order_params)
+    @order = user_signed_in? ? current_user.orders.build(order_params) : Order.new(order_params)
     @order.status = "new"
 
     subtotal = calculate_subtotal
@@ -25,17 +37,16 @@ class OrdersController < ApplicationController
     @order.hst = subtotal * tax_rates[:hst_rate]
     @order.total = subtotal + @order.gst + @order.pst + @order.hst
 
-    # ✅ 1. Charge Stripe first
     begin
       charge = Stripe::Charge.create({
-        amount: (@order.total * 100).to_i, # in cents
-        currency: 'usd',
+        amount: (@order.total * 100).to_i,
+        currency: 'cad',
         source: params[:stripeToken],
-        description: "Sage&Style Order for #{current_user.email}"
+        description: "Sage&Style Order for #{user_signed_in? ? current_user.email : @order.name}"
       })
 
-      #  2. Only save the order if Stripe payment succeeds
       @order.stripe_charge_id = charge.id
+      @order.status = "paid"
 
       if @order.save
         @cart.each do |product_id, quantity|
@@ -61,13 +72,20 @@ class OrdersController < ApplicationController
     end
   end
 
-
   def show
-    @order = current_user.orders.find(params[:id])
+    if user_signed_in?
+      @order = current_user.orders.find(params[:id])
+    else
+      redirect_to root_path, alert: "Please log in to view orders."
+    end
   end
 
   def index
-    @orders = current_user.orders.includes(order_items: :product, province: {})
+    if user_signed_in?
+      @orders = current_user.orders.includes(order_items: :product, province: {}).order(created_at: :desc)
+    else
+      redirect_to root_path, alert: "Please log in to view orders."
+    end
   end
 
   private
@@ -79,7 +97,7 @@ class OrdersController < ApplicationController
 
   def calculate_subtotal
     Product.find(@cart.keys).sum do |product|
-      product.price * @cart[product.id.to_s]
+      product.price * @cart[product.id.to_s].to_i
     end
   end
 

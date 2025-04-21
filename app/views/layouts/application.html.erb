@@ -31,23 +31,24 @@
     <%= link_to "Sage&Style", root_path, class: "navbar-brand text-white" %>
 
     <div class="navbar-nav">
-      <%= link_to "Home", root_path, class: "nav-link text-white" %>
-      <%= link_to "About", about_path, class: "nav-link text-white" %>
-      <%= link_to "Contact", contact_path, class: "nav-link text-white" %>
-      <% if user_signed_in? %>
-  <span class="me-2">Hello, <%= current_user.email %>!</span>
-  <%= link_to "My Orders", orders_path, class: "nav-link text-white" if user_signed_in? %>
+  <%= link_to "Home", root_path, class: "nav-link text-white" %>
+  <%= link_to "About", about_path, class: "nav-link text-white" %>
+  <%= link_to "Contact", contact_path, class: "nav-link text-white" %>
 
-  <%= button_to 'Logout', destroy_user_session_path, method: :delete, form_class: "d-inline", class: "nav-link text-white" %>
+  <%= link_to "Cart (#{
+    session[:cart]&.values&.map(&:to_i)&.sum || 0
+  })", cart_path, class: "nav-link text-white" %>
 
-
-<% else %>
-  <%= link_to 'Login', new_user_session_path, class: "nav-link text-white" %>
-  <%= link_to 'Sign Up', new_user_registration_path, class: "nav-link text-white" %>
-<% end %>
-
-    </div>
-  </div>
+  <% if user_signed_in? %>
+    <span class="nav-link text-white">Hello, <%= current_user.email %>!</span>
+    <%= link_to "My Orders", orders_path, class: "nav-link text-white" %>
+    <%= button_to "Logout", destroy_user_session_path, method: :delete, form_class: "d-inline", class: "nav-link text-white" %>
+  <% else %>
+    <%= link_to "Login", new_user_session_path, class: "nav-link text-white" %>
+    <%= link_to "Sign Up", new_user_registration_path, class: "nav-link text-white" %>
+  <% end %>
+</div>
+</div>
 </nav>
 
 
