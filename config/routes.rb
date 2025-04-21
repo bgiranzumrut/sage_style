@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   get "pages/about"
   get "pages/contact"
+  get "/provinces/:id/tax_rates", to: "provinces#tax_rates"
+
 
   devise_for :admins
   ActiveAdmin.routes(self)  # Load ActiveAdmin resources (like PageContent)

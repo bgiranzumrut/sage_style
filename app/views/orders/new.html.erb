@@ -15,7 +15,7 @@
     <%= f.label :province_id, "Province" %>
     <%= f.collection_select :province_id, @provinces, :id, :name,
           { prompt: "Select a province" },
-          { class: "form-select", required: true } %>
+          { class: "form-select", required: true, id: "province-select" } %>
   </div>
 
   <h3>Order Summary</h3>
@@ -29,11 +29,9 @@
       </tr>
     </thead>
     <tbody>
-      <% total = 0 %>
       <% @cart_items.each do |product| %>
         <% quantity = @cart[product.id.to_s] %>
         <% subtotal = product.price * quantity %>
-        <% total += subtotal %>
         <tr>
           <td><%= product.name %></td>
           <td><%= quantity %></td>
@@ -45,28 +43,15 @@
   </table>
 
   <p><strong>Subtotal:</strong> $<%= number_with_precision(@order.subtotal, precision: 2) %></p>
-
-<% if @order.gst.to_f > 0 %>
-  <p><strong>GST:</strong> $<%= number_with_precision(@order.gst, precision: 2) %></p>
-<% end %>
-
-<% if @order.pst.to_f > 0 %>
-  <p><strong>PST:</strong> $<%= number_with_precision(@order.pst, precision: 2) %></p>
-<% end %>
-
-<% if @order.hst.to_f > 0 %>
-  <p><strong>HST:</strong> $<%= number_with_precision(@order.hst, precision: 2) %></p>
-<% end %>
-
-<hr>
-<h4><strong>Total:</strong> $<%= number_with_precision(@order.total, precision: 2) %></h4>
-
+  <p><strong>GST:</strong> $<span id="gst-amount"><%= number_with_precision(@order.gst, precision: 2) %></span></p>
+  <p><strong>PST:</strong> $<span id="pst-amount"><%= number_with_precision(@order.pst, precision: 2) %></span></p>
+  <p><strong>HST:</strong> $<span id="hst-amount"><%= number_with_precision(@order.hst, precision: 2) %></span></p>
+  <hr>
+  <h4><strong>Total:</strong> $<span id="total-amount"><%= number_with_precision(@order.total, precision: 2) %></span></h4>
 
   <h3>Payment Info</h3>
   <div id="card-element" class="mb-3"></div>
-
   <%= hidden_field_tag :stripeToken, nil %>
-
   <%= f.submit "Pay Now", class: "btn btn-primary" %>
 <% end %>
 
@@ -80,18 +65,35 @@
   const form = document.getElementById('payment-form');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
-    const {token, error} = await stripe.createToken(card);
+    const { token, error } = await stripe.createToken(card);
     if (error) {
       alert(error.message);
     } else {
-      const input = document.querySelector('input[name="stripeToken"]');
-      input.value = token.id;
+      document.querySelector('input[name="stripeToken"]').value = token.id;
       form.submit();
     }
   });
+
+  // Tax refresh logic
+  document.addEventListener("DOMContentLoaded", () => {
+    const provinceSelect = document.getElementById("province-select");
+    const subtotal = <%= @order.subtotal.to_f %>;
+
+    provinceSelect.addEventListener("change", function () {
+      const provinceId = this.value;
+      if (!provinceId) return;
+
+      fetch(`/provinces/${provinceId}/tax_rates?subtotal=${subtotal}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log("Returned tax data:", data);
+    document.getElementById("gst-amount").textContent = `$${parseFloat(data.gst).toFixed(2)}`;
+    document.getElementById("pst-amount").textContent = `$${parseFloat(data.pst).toFixed(2)}`;
+    document.getElementById("hst-amount").textContent = `$${parseFloat(data.hst).toFixed(2)}`;
+    document.getElementById("total-amount").textContent = `$${parseFloat(data.total).toFixed(2)}`;
+  })
+  .catch(error => console.error("Error fetching tax rates:", error));
+
+    });
+  });
 </script>
-
-
-
-
