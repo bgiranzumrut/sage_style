@@ -49,6 +49,8 @@ class OrdersController < ApplicationController
       @order.status = "paid"
 
       if @order.save
+        session[:last_order_id] = @order.id if @order.user_id.nil?
+
         @cart.each do |product_id, quantity|
           product = Product.find(product_id)
           @order.order_items.create!(
@@ -64,6 +66,7 @@ class OrdersController < ApplicationController
         raise "Order save failed"
       end
 
+
     rescue Stripe::CardError => e
       flash[:alert] = e.message
       @provinces = Province.all
@@ -74,11 +77,18 @@ class OrdersController < ApplicationController
 
   def show
     if user_signed_in?
-      @order = current_user.orders.find(params[:id])
+      @order = current_user.orders.find_by(id: params[:id])
     else
-      redirect_to root_path, alert: "Please log in to view orders."
+      if session[:last_order_id].to_i == params[:id].to_i
+        @order = Order.find_by(id: params[:id], user_id: nil)
+      end
+    end
+
+    if @order.nil?
+      redirect_to root_path, alert: "You don't have permission to view this order."
     end
   end
+
 
   def index
     if user_signed_in?
