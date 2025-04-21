@@ -64,7 +64,7 @@ gem "image_processing", "~> 1.2"
 gem 'activeadmin'
 gem 'sassc'
 gem 'kaminari'
-gem 'bootstrap', '~> 5.3.0'
+gem 'bootstrap', '~> 5.3.5'
 gem "sassc-rails"
 gem 'stripe'
 
