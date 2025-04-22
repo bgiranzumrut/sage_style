@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
       @order.name = "#{current_user.first_name} #{current_user.last_name}"
       @order.address = current_user.address
       @order.province_id = current_user.province_id
+      @order.email = current_user.email
     end
 
     @cart_items = Product.find(@cart.keys)
@@ -60,12 +61,14 @@ class OrdersController < ApplicationController
           )
         end
 
+        #  Send email after saving
+        OrderMailer.confirmation_email(@order).deliver_now
+
         session[:cart] = {}
         redirect_to order_path(@order), notice: "Order placed and payment successful!"
       else
         raise "Order save failed"
       end
-
 
     rescue Stripe::CardError => e
       flash[:alert] = e.message
@@ -116,6 +119,6 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:name, :address, :province_id)
+    params.require(:order).permit(:name, :address, :province_id, :email)
   end
 end

@@ -42,4 +42,22 @@ ActiveAdmin.register Product do
     end
     f.actions
   end
+
+  # Show page with scaled image preview
+  show do
+    attributes_table do
+      row :name
+      row :description
+      row :price
+      row :stock_quantity
+      row :category
+      row :featured
+      row :on_sale
+      row :image do |product|
+        if product.image.attached?
+          image_tag product.image.variant(resize_to_limit: [300, 300])
+        end
+      end
+    end
+  end
 end

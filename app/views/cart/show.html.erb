@@ -2,7 +2,7 @@
 
 <% if @cart_items.empty? %>
   <p>Your cart is empty.</p>
-  <%= link_to 'Browse Products', products_path, class: 'btn btn-outline-dark btn-sm mt-2 product-details-btn' %>
+  <%= link_to 'Browse Products', products_path, class: 'product-btn' %>
 <% else %>
   <!--  Update Cart -->
   <form action="/cart/update" method="post">
@@ -31,14 +31,14 @@
             <td>$<%= '%.2f' % (product.price * @cart[product.id.to_s]) %></td>
             <td>
               <a href="/cart/remove/<%= product.id %>"
-                 class="btn btn-outline-dark btn-sm mt-2 product-details-btn">Remove</a>
+                 class="product-btn">Remove</a>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-    <button type="submit" class="product-details-btn mt-2">
+    <button type="submit" class="product-btn">
   Update Cart
 </button>
 
@@ -46,7 +46,7 @@
 
   </form>
 
-  <%= link_to "Proceed to Checkout", new_order_path, class: "btn btn-outline-dark btn-sm mt-2 product-details-btn" %>
+  <%= link_to "Proceed to Checkout", new_order_path, class: "product-btn" %>
 
 <% unless user_signed_in? %>
   <p class="text-muted mt-2">
@@ -56,3 +56,4 @@
 
 
 <% end %>
+

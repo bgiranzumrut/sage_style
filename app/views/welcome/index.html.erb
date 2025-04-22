@@ -9,21 +9,22 @@
 </div>
 
 <div class="category-buttons text-center mb-4">
-  <h2>Shop by Category</h2>
+
   <% Category.all.each do |category| %>
-    <%= link_to category.name, category_path(category), class: "btn btn-outline-secondary m-2" %>
+    <%= link_to category.name, category_path(category), class: "category-btn m-2" %>
+
   <% end %>
 </div>
 
 
 <section class="featured-products">
-  <h2>Featured Products</h2>
+
   <div class="product-grid">
     <%= render partial: "products/product_card", collection: @featured_products, as: :product %>
   </div>
 
 <div class="see-all-products-wrapper">
-  <%= link_to "See All Products", products_path, class: "btn-see-all" %>
+  <%= link_to "See All Products", products_path, class: "product-btn" %>
 </div>
 
 

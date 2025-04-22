@@ -26,18 +26,18 @@
 <!-- Filter Buttons -->
 <div class="filters text-center mb-4">
   <%= link_to "On Sale", products_path(params.permit(:search, :category_id).merge(filter: "on_sale")),
-    class: "btn-see-all mx-2 #{'active' if params[:filter] == 'on_sale'}" %>
+    class: "product-btn mx-2 #{'active' if params[:filter] == 'on_sale'}" %>
 
   <%= link_to "New", products_path(params.permit(:search, :category_id).merge(filter: "new")),
-    class: "btn-see-all mx-2 #{'active' if params[:filter] == 'new'}" %>
+    class: "product-btn mx-2 #{'active' if params[:filter] == 'new'}" %>
 
   <%= link_to "Recently Updated", products_path(params.permit(:search, :category_id).merge(filter: "recently_updated")),
-    class: "btn-see-all mx-2 #{'active' if params[:filter] == 'recently_updated'}" %>
+    class: "product-btn mx-2 #{'active' if params[:filter] == 'recently_updated'}" %>
 
   <%= link_to "All Products", products_path,
-  class: "btn-see-all mx-2 #{'active' unless params[:filter]}" %>
-
+    class: "product-btn mx-2 #{'active' unless params[:filter].present?}" %>
 </div>
+
 
 
 
@@ -53,8 +53,8 @@
         <% end %>
 
         <p class="product-price">$<%= product.price %></p>
-        <%= link_to "See Details", product_path(product), class: "product-details-btn" %>
-        <%= button_to 'Add to Cart', add_to_cart_path(product.id), method: :post, class: 'btn btn-success' %>
+        <%= link_to "See Details", product_path(product), class: "product-btn" %>
+        <%= button_to 'Add to Cart', add_to_cart_path(product.id), method: :post, class: 'product-btn' %>
 
       </div>
     <% end %>

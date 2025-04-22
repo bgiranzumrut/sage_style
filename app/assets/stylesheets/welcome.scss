@@ -57,6 +57,51 @@
   text-align: center;
 }
 
+.product-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid $dark-sage;
+  background-color: transparent;
+  color: $dark-sage !important;  // ← force link color
+  text-align: center;
+  text-decoration: none !important; // ← remove underline
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: $dark-sage;
+    color: $white !important;
+    text-decoration: none;
+  }
+}
+
+// Normalize <button> inside button_to
+form button.product-btn {
+  all: unset;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid $dark-sage;
+  background-color: transparent;
+  color: $dark-sage;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $dark-sage;
+    color: $white;
+  }
+}
+
+
 .product-card h5 {
   color: $dark-sage;
   font-weight: 600;
@@ -121,15 +166,31 @@
 }
 
 .category-buttons {
+  text-align: center;
+
   h2 {
-    margin-bottom: 1rem;
     color: $dark-sage;
+    margin-bottom: 1rem;
   }
 
-  .btn {
-    font-size: 1rem;
-    font-weight: 500;
+  .category-btn {
+    padding: 0.6rem 1.2rem;
+    border: 2px solid $dark-sage;
+    background-color: transparent;
+    color: $dark-sage;
     border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin-bottom: 4rem;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $dark-sage;
+      color: $white;
+      text-decoration: none;
+    }
   }
 }
+
 

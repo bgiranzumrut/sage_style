@@ -11,43 +11,54 @@
 
   <p class="price h4 mb-4">$<%= number_with_precision(@product.price, precision: 2) %></p>
 
-  <%= link_to "Back to Products", products_path, class: "btn btn-outline-dark" %>
-  <%= button_to 'Add to Cart', add_to_cart_path(@product.id), method: :post, class: 'btn btn-primary' %>
+  <%= link_to "Back to Products", products_path, class: "product-btn" %>
+  <%= button_to 'Add to Cart', add_to_cart_path(@product.id), method: :post, class: 'product-btn' %>
 
 </div>
 
-
 <style>
-.product-detail {
-  margin-top: 4rem;
-  max-width: 700px;
-  margin: 0 auto;
+.product-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid $dark-sage;
+  background-color: transparent;
+  color: $dark-sage !important;  // ← force link color
   text-align: center;
+  text-decoration: none !important; // ← remove underline
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
 
-  h1 {
-    font-size: 2.2rem;
-    color: $dark-sage;
-    font-weight: 700;
-    margin: 2rem;
-
-  }
-
-  .description {
-    font-size: 1.2rem;
-    color: #555;
-    margin: 2rem;
-  }
-
-  .price {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: $dark-sage;
-  }
-
-  a.btn {
-    margin-top: 1rem;
-    padding: 10px 20px;
+  &:hover {
+    background-color: $dark-sage;
+    color: $white !important;
+    text-decoration: none;
   }
 }
 
-</style>
+// Normalize <button> inside button_to
+form button.product-btn {
+  all: unset;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid $dark-sage;
+  background-color: transparent;
+  color: $dark-sage;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $dark-sage;
+    color: $white;
+  }
+}</style>
+
+

@@ -9,8 +9,17 @@ ActiveAdmin.register Order do
     id_column
     column :created_at
     column :status
-    column("Customer") { |order| "#{order.user.first_name} #{order.user.last_name}" }
-    column("Email")    { |order| order.user.email }
+
+    column("Customer") do |order|
+      if order.user.present?
+        "#{order.user.first_name} #{order.user.last_name}"
+      else
+        "#{order.name} (Guest)"
+      end
+    end
+    column("Email") do |order|
+      order.user&.email || order.email
+    end
     column("Province") { |order| order.province.name }
     column :subtotal
     column :gst
@@ -28,10 +37,17 @@ ActiveAdmin.register Order do
 
   show do
     panel "Customer Info" do
-      attributes_table_for order.user do
-        row :first_name
-        row :last_name
-        row :email
+      if order.user.present?
+        attributes_table_for order.user do
+          row :first_name
+          row :last_name
+          row :email
+        end
+      else
+        attributes_table_for order do
+          row("Name")  { order.name }
+          row("Email") { order.email }
+        end
       end
     end
 
@@ -60,6 +76,7 @@ ActiveAdmin.register Order do
       end
     end
   end
+
 
   form do |f|
     f.inputs "Order Details" do
